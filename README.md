@@ -6,3 +6,6 @@ Day 1 (add more detail, simple explanations of each topic):
 - Learned Big O Notation
 - Learned Arrays
 - Learned Linked List and Doubly Linked List
+
+Day 2 (add more detail, simple explanations of each topic):
+- Learned about Hash tables and collision handling in Python
