@@ -11,5 +11,9 @@ Input:
 Output:
 Explanation:
 ```
+**Constraints:**
+```text
+Constraints:
+```
 ## 2. My Approach
 > [Outline your approach to the problem]
