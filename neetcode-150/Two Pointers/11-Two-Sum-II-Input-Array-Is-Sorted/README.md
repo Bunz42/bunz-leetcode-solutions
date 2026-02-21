@@ -1,4 +1,4 @@
-# 10 - Two Sum II Input Array Is Sorted
+# 11 - Two Sum II Input Array Is Sorted
 
 **Difficulty:** Medium | **Link:** https://neetcode.io/problems/two-integer-sum-ii/question?list=neetcode150
 
