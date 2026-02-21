@@ -1,33 +1,27 @@
-# 10 - Valid Palindrome
+# 10 - Two Sum II Input Array Is Sorted
 
-**Difficulty:** Easy | **Link:** https://neetcode.io/problems/is-palindrome/question?list=neetcode150
+**Difficulty:** Medium | **Link:** https://neetcode.io/problems/two-integer-sum-ii/question?list=neetcode150
 
 ## 1. Problem Description
-> Given a string s, return true if it is a palindrome, otherwise return false.
-> A palindrome is a string that reads the same forward and backward. It is also case-insensitive and ignores all non-alphanumeric characters.
-> Note: Alphanumeric characters consist of letters (A-Z, a-z) and numbers (0-9).
+> Given an array of integers numbers that is sorted in non-decreasing order.
+> Return the indices (1-indexed) of two numbers, [index1, index2], such that they add up to a given target number target and index1 < index2. Note that index1 and index2 cannot be equal, therefore you may not use the same > element twice.
+> There will always be exactly one valid solution.
+> Your solution must use O(1) additional space.
 
 **Example 1:**
 ```text
-Input: s = "Was it a car or a cat I saw?"
-Output: true
-Explanation: After considering only alphanumerical characters we have "wasitacaroracatisaw", which is a palindrome.
+Input: numbers = [1,2,3,4], target = 3
+Output: [1,2]
+Explanation: The sum of 1 and 2 is 3. Since we are assuming a 1-indexed array, index1 = 1, index2 = 2. We return [1, 2].
 ```
 
-**Example 2:**
-```text
-Input: s = "tab a cat"
-Output: false
-Explanation: "tabacat" is not a palindrome.
-```
 **Constraints:**
 ```text
-1 <= s.length <= 1000
-s is made up of only printable ASCII characters.
+2 <= numbers.length <= 1000
+-1000 <= numbers[i] <= 1000
+-1000 <= target <= 1000
 ```
 
 ## 2. My Approach
-> This is a simple two pointers problem. Since the question specifies that its case insensitive and that your solution should ignore all non-alphanumeric
-> characters, I first construct the version of the string with only the alphanumeric chars. Then, I lower the entire string's case to make it case insensitive.
-> Then, I simply define a pointer at the start and end, incrementing them inwards as converging pointers and performing a check for inequality between characters
-> during each iteration (returning false if any alternate pair of characters are inequal).
+> Two pointers, one at the end and one at the beginning (since arr is sorted, pointer at the end will always be the greatest element and the pointer at the start will be the smallest)
+> check the sum between the two values, and if it's greater than the target, decrement the right pointer, if it's less than the target, increment the left.
