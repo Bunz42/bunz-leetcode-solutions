@@ -1,64 +1,46 @@
-# 12 - 3Sum
+# 14 - Trapping Rain Water
 
-**Difficulty:** Medium | **Link:** https://neetcode.io/problems/three-integer-sum/question?list=neetcode150
+**Difficulty:** Hard | **Link:** https://neetcode.io/problems/trapping-rain-water/question?list=neetcode150
 
 ## 1. Problem Description
 ```text
-Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]]
-where nums[i] + nums[j] + nums[k] == 0, and the indices i, j and k are all distinct.
-The output should not contain any duplicate triplets. You may return the output and the triplets in any order.
+You are given an array of non-negative integers height which represent an elevation map.
+Each value height[i] represents the height of a bar, which has a width of 1.
+
+Return the maximum area of water that can be trapped between the bars.
 ```
 
 **Example 1:**
-```text
-Input: nums = [-1,0,1,2,-1,-4]
-Output: [[-1,-1,2],[-1,0,1]]
-Explanation: 
-nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
-nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
-nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
-The distinct triplets are [-1,0,1] and [-1,-1,2].
-```
 
-**Example 2:**
-```text
-Input: nums = [0,1,1]
-Output: []
-Explanation: The only possible triplet does not sum up to 0.
-```
+<img width="798" height="318" alt="image" src="https://github.com/user-attachments/assets/b7b204b1-d73c-4ae2-a353-4bf504a5acbf" />
 
-**Example 3:**
 ```text
-Input: nums = [0,0,0]
-Output: [[0,0,0]]
-Explanation: The only possible triplet sums up to 0.
+Input: height = [0,2,0,3,1,0,1,3,2,1]
+Output: 9
 ```
 
 **Constraints:**
 ```text
-3 <= nums.length <= 1000
--10^5 <= nums[i] <= 10^5
+1 <= height.length <= 1000
+0 <= height[i] <= 1000
 ```
 
 ## 2. My Approach
 ```text
-Approach for the algo to find triplets:
-- I need to try to think of a two pointers approach.
-- Notice that you can rearrange the formula n1 + n2 + n3 = 0 to kind of follow an eqn similar to the classic Two Sum problem: n1 = -(n2 + n3) or -n1 = n2 + n3.
-- Now, we just run the soln to two sum using a standard two pointers approach, an O(n) soln, on each element in the array, making the final soln O(n^2). This is what we're aiming for, 
-because the brute force approach would be to check every triplet which is O(n^3).
-- This means, I need to sort the array so I'm going to use python's list.sort().
+1. Need to find a way to determine the amount of water trapped at a specific position in the array.
+	-> I think the way to do this is to find the greater elements to the left and right of the current position, then subtract the height at the current position from the minimum height surrounding it on either side.
+	-> Thus, the formula is as follows: min(height[l], height[r]) - height[idx]
 
+2. You could just brute force this problem by running an algorithm that repeatedly finds the greater elements to the left and right of the current position for every single index i, but that would be an inefficient solution,
+because some of the positions have the same greater left and right elements as their adjacent positions. Therefore, this would involve redundant repetition.
 
-Consider the constraint that you should not return any duplicate triplets:
-- Now, I know the algorithm is going to be something using -nums[i] = nums[j] + nums[k] (with two pointers representing
-j and k), so now I need to find a way to calculate indices j and k without dupes.
-- Well, since the array is sorted, we know that any duplicate values will be right next to each other, and the only way we get duplicate pairs of j and k are if, after moving the pointers,
-both j and k still point to the same values that they previously pointed to.
-- Thus, the algorithm for skipping dupes will be as follows:
-	- After finding a match, add it to the result, then increment j and decrement k once.
-	- Then, write a loop that keeps incrementing j if the value its currently pointing to is the same value as it was one increment ago.
-	- Do the same thing for k (but considering k is decrementing instead of incrementing).
-	- Also, perform a check on i as well to achieve the same thing.
-- This will ensure that no duplicate triplets are considered.
+3. So, a way to combat this could be to store the greater left and right elements in a separate array, then iterate through the intervals created in that array, keeping height[l] and height[r] the same across each index in
+each distinct interval. However, there's an even better way with a two pointers approach.
+
+4. The actual algorithm (two pointers approach):
+	-> To trap water at a particular index, the area trapped is entirely limited by the shorter of the two highest walls on either side.
+	-> So, if I put a pointer at the start and one at the end, I can keep track of the highest wall seen from both the left and right.
+	-> Since the smaller of the two walls is the bottleneck, I just compare the two tallest walls and see which one is shorter, then calculate the area with the shorter one inconsideration. Then, I update my tallest left wall or
+	tallest right wall accordingly.
+	-> To calculate trapped water, just use something along the lines of trapped_water += shortest_of_the_two_walls - height[i]
 ```
