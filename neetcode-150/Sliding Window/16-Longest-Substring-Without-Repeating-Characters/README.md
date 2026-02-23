@@ -1,4 +1,4 @@
-# 15 - Best Time to Buy And Sell Stock
+# 16 - Longest Substring Without Duplicates
 
 **Difficulty:** Medium | **Link:** https://neetcode.io/problems/longest-substring-without-duplicates/question
 
@@ -56,4 +56,5 @@ Implementation:
 - Repeat until the right pointer reaches the end of the string.
 - Return the max substring length.
 ```
+
 
