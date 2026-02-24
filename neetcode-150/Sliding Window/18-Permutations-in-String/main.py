@@ -1,22 +1,30 @@
 class Solution:
-    def characterReplacement(self, s: str, k: int) -> int:
-        frequencies = {}
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if len(s1) > len(s2):
+            return False
+
+        s1_f = {}
+        w_f = {}
+
+        for i in range(len(s1)):
+            s1_f[s1[i]] = s1_f.get(s1[i], 0) + 1
+            w_f[s2[i]] = w_f.get(s2[i], 0) + 1
+
+        if s1_f == w_f:
+            return True
+
         l = 0
-        max_freq = 0
-        max_len = 0
-
-        for r in range(len(s)):
-            char_entering = s[r]
-            frequencies[char_entering] = frequencies.get(char_entering, 0) + 1
+        for r in range(len(s1), len(s2)):
+            w_f[s2[r]] = w_f.get(s2[r], 0) + 1
             
-            max_freq = max(max_freq, frequencies[char_entering])
-            valid_window = (r - l + 1) - max_freq <= k
-
-            if not valid_window:
-                char_leaving = s[l]
-                frequencies[char_leaving] -= 1
-                l += 1
+            w_f[s2[l]] -= 1
+            if w_f[s2[l]] == 0:
+                del w_f[s2[l]]
             
-            max_len = max(max_len, r - l + 1)
+            l += 1
+
+            if s1_f == w_f:
+                return True
         
-        return max_len
+        return False
+
