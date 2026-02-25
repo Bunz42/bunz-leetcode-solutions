@@ -1,30 +1,31 @@
 class Solution:
-    def checkInclusion(self, s1: str, s2: str) -> bool:
-        if len(s1) > len(s2):
-            return False
+    def minWindow(self, s: str, t: str) -> str:
+        if len(t) > len(s):
+            return ""
 
-        s1_f = {}
-        w_f = {}
-
-        for i in range(len(s1)):
-            s1_f[s1[i]] = s1_f.get(s1[i], 0) + 1
-            w_f[s2[i]] = w_f.get(s2[i], 0) + 1
-
-        if s1_f == w_f:
-            return True
-
+        freq_t = Counter(t)
+        window = {}
         l = 0
-        for r in range(len(s1), len(s2)):
-            w_f[s2[r]] = w_f.get(s2[r], 0) + 1
-            
-            w_f[s2[l]] -= 1
-            if w_f[s2[l]] == 0:
-                del w_f[s2[l]]
-            
-            l += 1
+        min_string = ""
+        min_len = float('infinity')
 
-            if s1_f == w_f:
-                return True
+        def is_valid():
+            for char, count in freq_t.items():
+                if window.get(char, 0) < count:
+                    return False
+            return True
         
-        return False
+        for r in range(len(s)):
+            char = s[r]
+            window[char] = window.get(char, 0) + 1
 
+            while is_valid():
+                if r - l + 1 < min_len:
+                    min_string = s[l:r + 1]
+                    min_len = r - l + 1
+
+                l_char = s[l]
+                window[l_char] -= 1
+                l += 1
+    
+        return min_string  
