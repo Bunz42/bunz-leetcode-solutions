@@ -4,8 +4,9 @@
 
 ## 1. Problem Description
 ```text
-You are given an array of integers nums and an integer k. There is a sliding window of size k that starts at the left edge of the array.
-The window slides one position to the right until it reaches the right edge of the array.
+You are given an array of integers nums and an integer k. There is a sliding window of size k that
+starts at the left edge of the array. The window slides one position to the right until it reaches
+the right edge of the array.
 
 Return a list that contains the maximum element in the window at each step.
 ```
@@ -63,7 +64,7 @@ last level if you don't have enough elements to fill it.
 
 Because the levels are going to be filled, you can probably intuit that now the tree is basically
 just the same thing as a 1D array, where the array indices can be mapped to the associated nodes in
-the tree. Here's the mapping for that (if you want to know more, I'll make a guide on heaps):
+the tree. Here's the mapping for that (if you want to know more, I'll make a guide on heaps sometime):
 Left Child Node: 2 * index + 1
 Right Child Node: 2 * i + 2
 Parent Node: (i - 1) // 2
