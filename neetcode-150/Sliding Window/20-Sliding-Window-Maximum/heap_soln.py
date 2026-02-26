@@ -1,31 +1,22 @@
 class Solution:
-    def minWindow(self, s: str, t: str) -> str:
-        if len(t) > len(s):
-            return ""
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        if not nums:
+            return []
 
-        freq_t = Counter(t)
-        window = {}
-        l = 0
-        min_string = ""
-        min_len = float('infinity')
+        heap = []
+        result = []
 
-        def is_valid():
-            for char, count in freq_t.items():
-                if window.get(char, 0) < count:
-                    return False
-            return True
+        for i in range(k):
+            heapq.heappush(heap, (-nums[i], i))
         
-        for r in range(len(s)):
-            char = s[r]
-            window[char] = window.get(char, 0) + 1
+        result.append(-heap[0][0])
 
-            while is_valid():
-                if r - l + 1 < min_len:
-                    min_string = s[l:r + 1]
-                    min_len = r - l + 1
+        for r in range(k, len(nums)):
+            heapq.heappush(heap, (-nums[r], r))
 
-                l_char = s[l]
-                window[l_char] -= 1
-                l += 1
-    
-        return min_string  
+            while heap[0][1] <= r - k:
+                heapq.heappop(heap)
+
+            result.append(-heap[0][0])
+        
+        return result
