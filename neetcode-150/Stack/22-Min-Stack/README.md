@@ -70,8 +70,13 @@ my constructor, then updating my push() method to append elements to not
 only the actual stack, but also the min_stack. The min_stack will be empty at the 
 start, so I need to perform a check to see if its empty. If it is, I'll just add
 the element regardless because it's guaranteed to be a minimum at that point.
-Then, anytime after that, I'll push into the min stack only if an element is smaller
-than the previous minimum found.
+Then, anytime after that, I'll push the minimum between the desired value and the
+previously found minimum onto the stack, which will guarantee the smallest value
+in the stack is always at the top of the min stack, while also guaranteeing that
+the stacks are aligned in terms of size.
+
+Of course, this means that whenever I pop from the stack, I need to pop from the
+min stack as well to maintain size alignment.
 
 Then, to implement the getMin() function, I just have to return the element at
 the top of the min_stack, because its guaranteed to be the minimum.
