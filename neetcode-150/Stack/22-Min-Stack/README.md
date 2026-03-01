@@ -68,8 +68,8 @@ I can implement the getMin() function.
 I'm going to do this by initializing another stack called min_stack in
 my constructor, then updating my push() method to append elements to not
 only the actual stack, but also the min_stack. The min_stack will be empty at the 
-start, so I need to perform a check to see if its empty. If it is, I'll just add
-the element regardless because it's guaranteed to be a minimum at that point.
+start, so I need to perform a check to see if its empty. If it is, I'll just push
+the value directly because it's guaranteed to be a minimum at that point.
 Then, anytime after that, I'll push the minimum between the desired value and the
 previously found minimum onto the stack, which will guarantee the smallest value
 in the stack is always at the top of the min stack, while also guaranteeing that
