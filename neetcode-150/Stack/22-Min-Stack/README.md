@@ -1,92 +1,79 @@
-# 19 - Minimum Window Substring
+# 22 - Min Stack
 
-**Difficulty:** Hard | **Link:** https://neetcode.io/problems/minimum-window-with-characters/question
+**Difficulty:** Medium | **Link:** https://neetcode.io/problems/minimum-stack/question
 
 ## 1. Problem Description
 ```text
-Given two strings s and t, return the shortest substring of s such that every character in t,
-including duplicates, is present in the substring. If such a substring does not exist, return an empty string "".
+Design a stack class that supports the push, pop, top, and getMin operations.
 
-You may assume that the correct output is always unique.
+MinStack() initializes the stack object.
+void push(int val) pushes the element val onto the stack.
+void pop() removes the element on the top of the stack.
+int top() gets the top element of the stack.
+int getMin() retrieves the minimum element in the stack.
+Each function should run in O(1) time.
 ```
 
 **Example 1:**
 ```text
-Input: s = "OUZODYXAZV", t = "XYZ"
+Input: ["MinStack", "push", 1, "push", 2, "push", 0, "getMin", "pop", "top", "getMin"]
 
-Output: "YXAZ"
+Output: [null,null,null,null,0,null,2,1]
 
-Explanation: "YXAZ" is the shortest substring that includes "X", "Y", and "Z" from string t.
-```
-
-**Example 2:**
-```text
-Input: s = "xyz", t = "xyz"
-
-Output: "xyz"
-```
-
-**Example 3:**
-```text
-Input: s = "x", t = "xy"
-
-Output: ""
+Explanation:
+MinStack minStack = new MinStack();
+minStack.push(1);
+minStack.push(2);
+minStack.push(0);
+minStack.getMin(); // return 0
+minStack.pop();
+minStack.top();    // return 2
+minStack.getMin(); // return 1
 ```
 
 **Constraints:**
 ```text
-1 <= s.length <= 1000
-1 <= t.length <= 1000
-s and t consist of uppercase and lowercase English letters.
+-2^31 <= val <= 2^31 - 1.
+pop, top and getMin will always be called on non-empty stacks.
 ```
 
 ## 2. My Approach
 ```text
-This is clearly a sliding window problem. The word "window" is literally in the problem name.
-Okay, but in actuality, this problem involves identifying substrings that satisfy a given
-condition which is perfect for the sliding window pattern.
+This problem is kind of weird, because it's a class design problem.
+Essentially, this problem is just designing a stack class but with 
+an extra feature added that allows for the lookup of the minimum
+value in the stack.
 
-If you were to brute force this problem, you'd just check every possible substring possible
-and keep track of the shortest one that meets the condition. This algorithm would have
-a time complexity of O(n^2) which is pretty slow. Thus, we use sliding window to eliminate
-the rechecking of already unqualified substrings.
+To implement this class, I'll start by just implementing the constructor
+and functions for a basic stack class using python's stack functionality.
 
-This problem is pretty similar to some other sliding window problems I've done, like the
-one where you check whether or not any substring in a string is a permutation of another
-string. 
+Constructor: just initialize a self.stack = []
+Push: just push an element onto the stack with self.stack.append(val)
+Pop: self.stack.pop()
+Top: return self.stack[-1] to peek at the top element
 
-The catch: this problem is different because the substring can have characters that t
-doesn't have, but can still be valid. The only characters you care about are the ones 
-that are in string t. Thus, when comparing the two frequency maps, only check the chars
-that appear in t.
-Also, characters are case sensitive.
+Now, we need to implement the getMin() function, which is the special part
+of this problem. To do this, I need a way to locate the minimum element in
+the stack. Now, a brute force approach to implementing this function would
+be to just iterate through the stack and find the minimum element, but the
+problem says all the functions need to run in O(1) time, so that O(n)
+algorithm isn't going to work out.
 
-How do we validate the substrings and know when to shrink or expand it? We just
-keep expanding the window through the right pointer until we hit a valid substring
-that satisfies the condition. Then, we want the shortest possible one, so we shrink
-it from the left until we get the shortest substring that's still valid. Then, we 
-compare it to the previously found minimum-length substring.
+So, I need a way to get the time complexity down to O(1), and one way I 
+can think of to do that is just to use another stack, since popping and
+pushing into a stack is an O(1) operation, if I just create another stack
+to keep track of the minimum element in any stack created by this class,
+I can implement the getMin() function.
 
-Edge cases: 
-1. If t is longer than s or an empty string, return an empty string immediately.
+I'm going to do this by initializing another stack called min_stack in
+my constructor, then updating my push() method to append elements to not
+only the actual stack, but also the min_stack. The min_stack will be empty at the 
+start, so I need to perform a check to see if its empty. If it is, I'll just add
+the element regardless because it's guaranteed to be a minimum at that point.
+Then, anytime after that, I'll push into the min stack only if an element is smaller
+than the previous minimum found.
 
-Actual implementation (python):
-- If len(t) > len(s) return ""
-- Initialize freq_t, window for t char frequencies and substr char frequencies.
-- l = 0 for the left side of the window.
-- Initialize min_string = "" variable.
-- min_len = float('infinity')
-- make a helper function is_valid to check the validity of a substring:
-for char, count in freq_t.items(): 
-if window.get(char, 0) < count: return False
-else: return True
-- for r in range(len(s)) for the right side of the dynamic window.
-- char = s[r]
-- window[char] = window.get(s[r], 0) + 1
-- while is_valid:
-	- if the length of the valid substring < the min_len found so far,
-	make it our new min_string.
-	- pop left character
-- Extract the indices and return the resulting min_string.
+Then, to implement the getMin() function, I just have to return the element at
+the top of the min_stack, because its guaranteed to be the minimum.
 ```
 
